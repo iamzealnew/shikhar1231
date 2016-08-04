@@ -1,0 +1,43 @@
+CREATE TABLE [dbo].[tbl_vehicle] (
+    [vehicle_id]   INT          IDENTITY (1, 1) NOT NULL,
+    [available]    INT          NULL,
+    [Vehicle_type] VARCHAR (20) NULL,
+    PRIMARY KEY CLUSTERED ([vehicle_id] ASC)
+);
+
+
+CREATE TABLE [dbo].[TrainDetail] (
+    [TrainNo]            INT          NOT NULL,
+    [TrainName]          VARCHAR (50) NOT NULL,
+    [SourceStation]      VARCHAR (50) NULL,
+    [SourceTime]         VARCHAR (50) NULL,
+    [DestinationStation] VARCHAR (50) NULL,
+    [DestinationTime]    VARCHAR (50) NULL,
+    [NoOfCoaches]        VARCHAR (50) NULL,
+    [Fare]               VARCHAR (50) NULL,
+    PRIMARY KEY CLUSTERED ([TrainNo] ASC)
+);
+
+
+CREATE PROCEDURE [dbo].[add_booking]
+	@address varchar(20), 
+	@num int,
+	@vehicle_id int,
+	@booking_id int
+
+	
+AS
+	set identity_insert tbl_booking ON;
+
+	insert into tbl_booking(booking_id, vehicle_id, user_address , numberofvehicles) values (@booking_id ,@vehicle_id, @address, @num);
+	update tbl_vehicle set available=available-@num where tbl_vehicle.vehicle_id=@vehicle_id; 
+RETURN 0
+
+
+CREATE PROCEDURE [dbo].[view_vehicle]
+	@type varchar(20)
+	
+AS
+	set identity_insert tbl_vehicle ON;
+	SELECT * from tbl_vehicle where Vehicle_type= @type
+RETURN 0
