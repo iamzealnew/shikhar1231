@@ -48,3 +48,17 @@ AS
 	set identity_insert tbl_vehicle ON;
 	SELECT * from tbl_vehicle where Vehicle_type= @type
 RETURN 0
+
+
+//with op
+
+alter procedure sp_add(@name varchar(50), @id int output)
+as
+begin
+insert into stu1(name) values(@name)
+set @id=SCOPE_IDENTITY();
+end
+
+ cmd.Parameters.AddWithValue("@id", SqlDbType.Int);
+ cmd.Parameters["@id"].Direction = ParameterDirection.Output;
+ Convert.ToInt32(cmd.Parameters["@id"].Value);
