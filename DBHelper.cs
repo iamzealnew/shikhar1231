@@ -11,6 +11,13 @@ namespace ConsoleApplication3
 {
     class DBHelper
     {
+        
+         /* @author 
+        Name : Shikhar Shrivastava
+        Contact : 8962664191
+        email : shikharshrivastava93@gmail.com
+        
+        */
 
         static SqlConnection cn;
         static SqlCommand cmd;
