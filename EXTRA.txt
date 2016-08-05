@@ -1,3 +1,10 @@
+ /* @author 
+        Name : Shikhar Shrivastava
+        Contact : 8962664191
+        email : shikharshrivastava93@gmail.com
+        
+        */
+
 CREATE TABLE [dbo].[tbl_vehicle] (
     [vehicle_id]   INT          IDENTITY (1, 1) NOT NULL,
     [available]    INT          NULL,
