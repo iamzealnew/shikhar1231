@@ -4,35 +4,26 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConsoleApplication3
+namespace FlightManagementSystem
 {
     class Program
     {
-        
-         /* @author 
-        Name : Shikhar Shrivastava
-        Contact : 8962664191
-        email : shikharshrivastava93@gmail.com
-        
-        */
-        
-        static List<Vehicle> lstvehicle;
+        public static List<Flight> flightList;
         static void Main(string[] args)
         {
-            lstvehicle = new List<Vehicle>();
 
+            flightList = new List<Flight>();
             showMenu();
 
         }
 
-        public static void showMenu()
+        static void showMenu()
         {
             Console.WriteLine();
-
             Console.WriteLine("Please make a choice : ");
-            Console.WriteLine("Press 1 to make a new booking. ");
-            Console.WriteLine("Press 2 to view Vehicle details and availablility. ");
-            Console.WriteLine();
+            Console.WriteLine("Press 1 to View Flight Details ");
+            Console.WriteLine("Press 2 to Delete Flight ");
+            Console.WriteLine("Press 3 to Exit ");
 
             int ch = int.Parse(Console.ReadLine());
 
@@ -40,60 +31,63 @@ namespace ConsoleApplication3
             {
                 case 1:
 
-                    Console.WriteLine("Please enter Vehicle Id");
-                    int v_id = int.Parse(Console.ReadLine());
-                    Console.WriteLine("Please enter no of vehicles required");
-                    int noOfV = int.Parse(Console.ReadLine());
-                    Console.WriteLine("Please enter your address");
-                    String address = Console.ReadLine();
-                    Random rnd = new Random();
-                    int b_id = rnd.Next(10000, 99999);
+                    Console.WriteLine("Please enter Location Name :");
+                    String locationName = Console.ReadLine();
+                    DBHelper db = new DBHelper();
+                    flightList = db.getFlight(locationName);
 
-                    Booking newBooking = new Booking(b_id, v_id, noOfV, address);
-
-                    int result = DBHelper.AddBooking(newBooking);
-                    if (result == 1)
+                    if (flightList.Count > 0)
                     {
-
-                        Console.WriteLine("Booking successfull with ID :" + b_id);
-                    }
-                    else
-                    {
-                        Console.WriteLine("Something went wrong :( ");
-                    }
-
-                    showMenu();
-                    break;
-
-                case 2:
-
-                    Console.WriteLine("Please enter the type of vehicle you want.");
-                    String type = Console.ReadLine();
-                    lstvehicle = DBHelper.ViewVehicle(type);
-
-                    if (lstvehicle.Count > 0)
-                    {
-                        foreach (Vehicle objvehicle in lstvehicle)
+                        for (int i = 0; i < flightList.Count; i++)
                         {
-                            Console.WriteLine("Vehicle Details");
+                            Console.WriteLine("Flight ID is : " + flightList[i].FlightID);
+                            Console.WriteLine("Flight Name is : " + flightList[i].FlightName);
+                            Console.WriteLine("Flight is from location : " + flightList[i].FromLocation);
+                            Console.WriteLine("Flight is to location : " + flightList[i].ToLocation);
+                            if (flightList[i].IsSpecialFlight == 1)
+                            {
+                                Console.WriteLine("Yay...this is a special flight. You get 10% discount");
 
-                            Console.WriteLine("Vehicle Type:");
-                            Console.WriteLine(objvehicle.type);
-                            Console.WriteLine("Vehicle Availablility:");
-                            Console.WriteLine(objvehicle.available);
-                            Console.WriteLine("Vehicle ID");
-                            Console.WriteLine(objvehicle.vehicle_id);
-                            
+                                double Fare = flightList[i].Fare;
+
+                                double disFare = Fare;
+                                double dis = (Fare * 0.1);
+                                Console.WriteLine("Flight Fare is : " + (Fare - dis));
+
+
+                            }
+                            else
+                                Console.WriteLine("Flight Fare is : " + flightList[i].Fare);
 
                         }
                     }
                     else
-                    {
-                        Console.WriteLine("Try again");
+                        Console.WriteLine("No flights found..");
 
-                    }
 
                     showMenu();
+                    break;
+                case 2:
+
+                    Console.WriteLine("Enter the id to delete the flight : ");
+                    int delID = int.Parse(Console.ReadLine());
+
+                    DBHelper db1 = new DBHelper();
+                    Console.WriteLine("Are you absolutely sure? (y/n) ");
+                    String choice = Console.ReadLine();
+                    if (choice.Equals("y"))
+                    {
+                        int i = db1.delFlight(delID);
+                        if (i==1)
+                        {
+                            Console.WriteLine("Flight deletion successful.");
+                        }
+                        else
+                            Console.WriteLine("Flight deletion was not successful/cancelled.");
+                    }
+                    showMenu();
+                    break;
+                case 3:
                     break;
 
 
