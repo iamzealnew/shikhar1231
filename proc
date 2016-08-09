@@ -1,0 +1,9 @@
+CREATE PROCEDURE [dbo].[getFlight1213929]
+	@location varchar(40)
+	
+AS
+	
+	select * from tbl_Flight1213929 where tbl_Flight1213929.FromLocation = (select tbl_Location1213929.LocationID from  tbl_Location1213929 where tbl_Location1213929.LocationName = @location)
+ 
+
+RETURN 0
